@@ -13,7 +13,7 @@ ui <- fluidPage(
                         #break
                         br(),
                         #Paragraph output
-                        p("The user will select the following criteria: gender, height, weight, desired weight, and commitment. 
+                        p("The user will select the following criteria: gender, height, current weight (left knob on the slider), desired weight (right knob on the slider), and commitment. 
                           The program will use those data points to anaylze whether the user is fit for a weight loss program using the BMI formula. 
                           If the user is underweight, HealthierU will allow the user to know a weight loss program is not recommended. 
                           If the user is not underweight, then HealthierU will move on to further analysis regarding workout options."),
