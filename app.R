@@ -6,9 +6,9 @@ ui <- fluidPage(theme= shinytheme("cerulean"),
   navbarPage("HealthyU", 
              #Creates a tab
              tabPanel("Instructions",
-                      #Under this tab the main Panel depicts the paragraph below
+                      #Under this tab the main Panel depicts the paragraph below in the color
                       mainPanel(span(style="color:dodgerblue",
-                        #Paragraph output
+                        #Paragraph output bold
                         strong(p("Welcome to our Weight Loss Program!"),
                         #break
                         br(),
