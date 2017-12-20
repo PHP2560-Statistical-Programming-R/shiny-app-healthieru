@@ -50,7 +50,8 @@ ui <- fluidPage(theme= shinytheme("cerulean"),
              ),
              #Inserts another tab
              tabPanel("Workout Analysis",
-                      tableOutput("exercises")              # Prints the exercises table that was created in output below
+                      tableOutput("exercises"),             # Prints the exercises table that was created in output below 
+                      textOutput("labelcalburn")
              )
              )
   )
@@ -91,6 +92,9 @@ server <- function(input, output) {
   output$labelUSATargetBmi<-renderText({weight_distribution(input)$labelUSATargetBmi})
   #labelBmiNotes
   output$labelBmiNotes<-renderText({weight_distribution(input)$labelBmiNotes})
+  #labelcalburn
+  output$labelcalburn<-renderText({exercises(input)$labelcalburn})
+
   
   #Create a plot from the weight_distribution function input
   output$weight_distribution <- renderPlot({
@@ -208,11 +212,17 @@ server <- function(input, output) {
       reg_table<- reg_table %>% group_by(Activity)%>%
         mutate(burn.rate=mean(c(target.weight, weight))*standard,
                burn.calories=burn.rate*intensity) 
+      renderText({paste("To reach your goal of", input$weights, "you will need to burn", cal.per.week, 'per week.', sep=' ')})
+      
+      
     } else if (units =="Metric"){
       cal.per.week <- -((target.weight - weight) / target.date * 3500/ 0.453592)   # How many calories should be lost per week on average
       reg_table<- reg_table %>% group_by(Activity)%>%
         mutate(burn.rate=mean(c(target.weight, weight))*metric,
                burn.calories=burn.rate*intensity) 
+      renderText({paste("To reach your goal of", input$weights, "you will need to burn", cal.per.week, 'per week.', sep=' ')})
+      
+      
     }
     summary_table=reg_table %>% filter((.9*cal.per.week)<=burn.calories) 
     
@@ -228,11 +238,37 @@ server <- function(input, output) {
       print("No exercises match your criteria. Please change intensity and/or target date.")
     } else{
       # Prints all exercises that can burn that many calories per hour or more
-      summary_table %>% 
+      summary=summary_table %>% 
         select(Activity,burn.rate) %>% 
         arrange(burn.rate) %>% 
-        rename("Calories Per Hour"=burn.rate)
+        dplyr::rename("Calories Per Hour"=burn.rate)
     }
+    
+
   })
+  
 }
+exercises<-function(input){
+  req(input$metric_sys)
+  req(input$weights)
+  
+  units<-input$metric_sys           # Converts Shiny App user input for metric system option into one variable
+  weight<-input$weights[2]          # Converts Shiny App user input for current weight slidebar into one variable
+  target.weight<-input$weights[1]   # Converts Shiny App user input for desired weight slidebar into one variable
+  target.date<-input$target.date    # Converts Shiny App user input for desired date slidebar into one variable
+
+  if (units == "Standard"){ #if standard selected, use cal.per.week for standard measurements
+    cal.per.week <- -((target.weight - weight) / target.date * 3500)   # How many calories should be lost per week on average
+    labelcalburn=paste("To reach your goal of", input$weights[1], "lbs over",input$target.date ,"weeks, you will need to burn", round(cal.per.week,2), 'calories per week.', sep=' ') #print explanation
+    
+  } else if (units =="Metric"){#if metric selected, use cal.per.week for metric measurements
+    cal.per.week <- -((target.weight - weight) / target.date * 3500/ 0.453592)   # How many calories should be lost per week on average
+    labelcalburn=paste("To reach your goal of", input$weights[1], "kg over",input$target.date ,"weeks, you will need to burn", round(cal.per.week,2), 'calories per week.', sep=' ') #print explanation
+  }
+  return(list(
+    labelcalburn=labelcalburn
+  ))
+}
+
+
 shinyApp(ui = ui, server = server)
