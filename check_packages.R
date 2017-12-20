@@ -7,4 +7,4 @@ check_packages = function(names){
   }
 }
 # Checks to see if required packages are already installed.
-check_packages(c("shiny","XML","RCurl","reshape","plyr","dplyr","broom","ggplot2"))  #check these packages
+check_packages(c("shiny","XML","RCurl","reshape","plyr","dplyr","broom","ggplot2","shinythemes"))  #check these packages
