@@ -1,15 +1,15 @@
 source("webscrape.R")
 
-ui <- fluidPage(
+ui <- fluidPage(theme= shinytheme("cerulean"),
   titlePanel("Healthier U - Weight Loss Program"),    # Adds Title
   #Adds Navigation Bar at the top of the Page
   navbarPage("HealthyU", 
              #Creates a tab
              tabPanel("Instructions",
                       #Under this tab the main Panel depicts the paragraph below
-                      mainPanel(
+                      mainPanel(span(style="color:dodgerblue",
                         #Paragraph output
-                        p("Welcome to our Weight Loss Program!"),
+                        strong(p("Welcome to our Weight Loss Program!"),
                         #break
                         br(),
                         #Paragraph output
@@ -20,14 +20,14 @@ ui <- fluidPage(
                         #break
                         br(),
                         #Paragraph output
-                        p("Let's get started!"),
+                        p("Let's get started!"))),
                         #break
                         br(),
                         #Image is inserted
                         img(src="exercise.png")
                         )),
              #Another Tab is inserted
-             tabPanel("Personal Information",
+             tabPanel("BMI Analysis",
                       sidebarPanel(
                         # Adds buttons for selecting gender and metric system
                         radioButtons("gender", "Gender", c("Male","Female")),
@@ -38,10 +38,7 @@ ui <- fluidPage(
                         # Adding input slider bars reference name, label, min/max values, and starting value respectively
                         sliderInput("target.date", "Maximum Number of Weeks To Achieve Desired Weight", min = 1, max = 100, value = 50),
                         sliderInput("intensity", "Number of Hours Devoted to Exercising Every Week", min = 1, max = 20, value = 5)
-                      )
-             ),
-             #Inserts another tab 
-             tabPanel("BMI Analysis",
+                      ),
                       mainPanel(
                         plotOutput("weight_distribution"),    # Prints the bmi graph that was created in output below
                         textOutput("labelBMI"),               # Prints the text of your BMI that was created in ouput below
@@ -57,6 +54,7 @@ ui <- fluidPage(
              )
              )
   )
+
 
 
 ################## Creating Output (server) section of Shiny App #######################
@@ -151,6 +149,7 @@ server <- function(input, output) {
       stat_function(fun=dnorm, args=list(mean,sd), xlim=c(target.bmi,bmi), geom="area", fill=fill2, alpha = 0.7) +
       
       # Creates lines and text on graph
+      ggtitle("Current and Target BMI Analysis Compared to U.S. Adult Population")+ theme(plot.title = element_text(size = 22, face = "bold", color = "dodgerblue"))+ #Adds title and customizes it
       geom_vline(xintercept=c(18.5,25,30)) +                 # Adds black vertical lines in desired x location
       geom_text(aes(mean,0, label=paste0("|", "\n", "U.S. Average")), color=color1) +  # Adds average tick mark
       geom_text(aes(bmi,0.0025, label=paste0("Current", "\n", "BMI", "\n", "|")), color=color1) +  # Adds average tick mark
