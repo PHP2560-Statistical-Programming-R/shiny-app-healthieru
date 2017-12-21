@@ -187,10 +187,10 @@ server <- function(input, output) {
       geom_text(aes(32,0.05-y, label="Obese"))    +          # Adds Obese text in top corresponding region
       theme(axis.title.y=element_blank(), axis.text.y=element_blank(),axis.ticks.y=element_blank())    # Removes y axis information
     
-    labelBMI=paste("Your BMI: ", round(bmi,digits=1), " (", diagnosis, ")")
-    labelTargetBmi=paste("\n","Your Target BMI: ", round(target.bmi,digits=1), " (", target.diagnosis, ")")
-    labelUSABmi=paste0("% of U.S. Adult ",gender, "s < Your BMI: ", bmi.percent,"%")
-    labelUSATargetBmi=paste0("\n", "% of U.S. Adult ",gender, "s < Your Target BMI: ", target.bmi.percent,"%")
+    labelBMI=paste("Your current BMI: ", round(bmi,digits=1), " (", diagnosis, ")")
+    labelTargetBmi=paste("\n","Your target BMI: ", round(target.bmi,digits=1), " (", target.diagnosis, ")")
+    labelUSABmi=paste0("Percent of U.S. Adult ",gender, "s less than your current BMI: ", bmi.percent,"%")
+    labelUSATargetBmi=paste0("\n", "Percent of U.S. Adult ",gender, "s less than your target BMI: ", target.bmi.percent,"%")
     labelBmiNotes=paste0("Note: BMI may be a misinformative measure", "\n", " of health as it doesn't take into account",
                          "\n", " for muscle mass or body shape.")
     
