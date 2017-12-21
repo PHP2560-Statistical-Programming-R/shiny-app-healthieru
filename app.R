@@ -13,13 +13,20 @@ ui <- fluidPage(theme= shinytheme("cerulean"),
                         #break
                         br(),
                         #Paragraph output
-                        p("The user will select the following criteria: gender, height, current weight (left knob on the slider), desired weight (right knob on the slider), and commitment. 
+                        p("In the BMI Analysis Tab, the user will select the following criteria: gender, height, current weight (left knob on the slider), desired weight (right knob on the slider), and commitment. 
                           The program will use those data points to anaylze whether the user is fit for a weight loss program using the BMI formula. 
                           If the user is underweight, HealthierU will allow the user to know a weight loss program is not recommended. 
-                          If the user is not underweight, then HealthierU will move on to further analysis regarding workout options."),
+                          If the user is not underweight, then HealthierU will move on to further analysis regarding workout options.
+                          The user's input is then graphically compared to the United States population."),
                         #break
                         br(),
                         #Paragraph output
+                        p("In the Workout Analysis Tab, a list of workouts is selected that meets the user's goals from the BMI Analysis Tab.
+                          The exercises selected are ones that burn the minimum amount of calories required to meet the user's criteria by the selected deadline, 
+                          and exercises that burn MORE than the minimum amount if the user decides to try more intense exercises."),
+                        br(),
+                        p("In the Dietary Recommendations Tab, we have included an explanation of how diet also affects BMI and suggestions on dietary changes to improve one's BMI."),
+                        br(),
                         p("Let's get started!"))),
                         #break
                         br(),
